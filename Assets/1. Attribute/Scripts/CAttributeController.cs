@@ -97,7 +97,7 @@ public class CAttributeController : MonoBehaviour
                             break;
                     }
                 }
-
+                
                 else
                 {
                     Debug.LogError("SizeAttribute가 붙지못함!");
