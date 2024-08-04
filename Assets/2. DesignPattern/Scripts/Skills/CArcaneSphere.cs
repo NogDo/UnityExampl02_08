@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyProject.Homework0804;
 
 namespace MyProject.Skill
 {
@@ -27,6 +28,15 @@ namespace MyProject.Skill
                 spinner.SetParent(transform);
                 spinner.localPosition = Vector3.up;
             }
+
+            Instantiate(projectilePrefab, spinner);
+            Instantiate(projectilePrefab, spinner);
+            Instantiate(projectilePrefab, spinner);
+
+            for (int i = 0; i < 3; i++)
+            {
+                spinner.GetChild(i).gameObject.SetActive(false);
+            }
         }
 
         private void Update()
@@ -38,12 +48,35 @@ namespace MyProject.Skill
         {
             base.Apply();
 
-            // 양 옆으로 구체 2개 생성
-            Instantiate(projectilePrefab, spinner);
-            Instantiate(projectilePrefab, spinner);
+            if (context.owner.EquipWeapon != null && context.owner.EquipWeapon.WeaponType == CWeapon.EWeaponType.ARCANE)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    spinner.GetChild(i).gameObject.SetActive(true);
+                }
 
-            spinner.GetChild(0).localPosition = Vector3.right;
-            spinner.GetChild(1).localPosition = Vector3.left;
+                spinner.GetChild(0).localPosition = Vector3.forward;
+                spinner.GetChild(1).localPosition = Vector3.right + Vector3.back;
+                spinner.GetChild(2).localPosition = Vector3.left + Vector3.back;
+            }
+
+            else
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    spinner.GetChild(i).gameObject.SetActive(true);
+                }
+
+                spinner.GetChild(0).localPosition = Vector3.right;
+                spinner.GetChild(1).localPosition = Vector3.left;
+            }
+
+            if (skill == null)
+            {
+                skill = new CSkillArcaneSphere();
+            }
+
+            skillDamageText.text = $"Damage : {skill.GetDamage()}";
         }
 
         public override void Use()
@@ -57,7 +90,7 @@ namespace MyProject.Skill
 
             foreach (Transform projectile in spinner)
             {
-                Destroy(projectile.gameObject);
+                projectile.gameObject.SetActive(false);
             }
         }
     }

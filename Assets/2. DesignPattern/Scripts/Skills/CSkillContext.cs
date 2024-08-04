@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace MyProject.Skill
 {
@@ -49,6 +50,14 @@ namespace MyProject.Skill
         public void UseSkill()
         {
             currentSkill.Use();
+        }
+
+        /// <summary>
+        /// 데미지 버튼 클릭했을 때 실행될 메서드. (현재 무기의 데미지를 증가시킨다.)
+        /// </summary>
+        public void OnDamageUpButtonClick()
+        {
+            currentSkill.DamageUp();
         }
     }
 }

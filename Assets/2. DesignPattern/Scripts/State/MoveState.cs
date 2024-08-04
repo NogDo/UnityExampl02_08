@@ -13,12 +13,12 @@ namespace MyProject.State
 
         public override void Exit()
         {
-            Debug.Log("이동 상태 종료");
+            //Debug.Log("이동 상태 종료");
         }
 
         public override void Update()
         {
-            player.text.text = $"{GetType().Name} : {player.fMoveDistance:n1}";
+            player.textState.text = $"{GetType().Name} : {player.fMoveDistance:n1}";
             player.fMoveDistance += Time.deltaTime;
         }
     }

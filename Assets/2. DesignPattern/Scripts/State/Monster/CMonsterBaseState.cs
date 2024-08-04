@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
-namespace MyProject.HomeworkMonsterState
+namespace MyProject.Homework0804
 {
     public class CMonsterBaseState
     {
         #region protected º¯¼ö
         protected CMonsterController monsterController;
+        protected StringBuilder stringBuilder = new StringBuilder();
         #endregion
 
         public void Init(CMonsterController monsterController)

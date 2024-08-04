@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using MyProject.Skill;
 using MyProject.State;
+using MyProject.Homework0804;
 
 public class CPlayer : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class CPlayer : MonoBehaviour
     }
 
     #region public 변수
-    public TextMeshPro text;
+    public TextMeshPro textState;
     public Transform shotPoint;
     public EState currentState;
 
@@ -26,10 +27,33 @@ public class CPlayer : MonoBehaviour
     #endregion
 
     #region private 변수
-    CharacterController cc;
     CSkillContext skillContext;
     CStateMachine stateMachine;
+    CWeapon currentEquipWeapon;
+
+    CharacterController cc;
+    [SerializeField]
+    TextMeshPro textWeapon;
     #endregion
+
+    /// <summary>
+    /// 현재 장착중인 무기
+    /// </summary>
+    public CWeapon EquipWeapon
+    {
+        get
+        {
+            if (currentEquipWeapon == null)
+            {
+                return null;
+            }
+
+            else
+            {
+                return currentEquipWeapon;
+            }
+        }
+    }
 
     void Awake()
     {
@@ -61,19 +85,29 @@ public class CPlayer : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            skillContext.SetCurrentSkill(0);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    skillContext.SetCurrentSkill(0);
+        //}
 
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            skillContext.SetCurrentSkill(1);
-        }
+        //else if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    skillContext.SetCurrentSkill(1);
+        //}
 
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        //else if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    skillContext.SetCurrentSkill(2);
+        //}
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<CWeapon>(out CWeapon weapon))
         {
-            skillContext.SetCurrentSkill(2);
+            currentEquipWeapon?.TakeOff();
+            currentEquipWeapon = weapon;
+            currentEquipWeapon.Equip(textWeapon, skillContext);
         }
     }
 
@@ -170,11 +204,11 @@ public class CPlayer : MonoBehaviour
         switch (currentState)
         {
             case EState.IDLE:
-                text.text = $"{EState.IDLE} state : {fStateStay.ToString("n0")}";
+                textState.text = $"{EState.IDLE} state : {fStateStay.ToString("n0")}";
                 break;
 
             case EState.MOVE:
-                text.text = $"{EState.MOVE} state : {fStateStay.ToString("n0")}";
+                textState.text = $"{EState.MOVE} state : {fStateStay.ToString("n0")}";
                 break;
 
             case EState.JUMP:
