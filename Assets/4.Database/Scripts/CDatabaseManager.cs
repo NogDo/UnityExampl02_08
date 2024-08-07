@@ -68,8 +68,6 @@ namespace MyProject
 
             conn = new MySqlConnection(config);
             conn.Open();
-
-            //print(conn.State);
         }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace MyProject
 
             //sha256.Dispose();   // 해쉬값 해제하기 방법1
 
-            // 해쉬값 해제하기 방법2 IDisposable 인터페이스를 상속한 것만 가능
+            // 해쉬값 해제하기 방법2 using을 사용! IDisposable 인터페이스를 상속한 것만 가능
             using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] hashArray = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
@@ -105,7 +103,6 @@ namespace MyProject
                 }
                 pwhash = st.ToString();
             }
-
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
@@ -122,12 +119,7 @@ namespace MyProject
             {
                 // 로그인 성공 (email과  pw 값이 동시에 일치하는 행이 존재함)
                 DataRow row = set.Tables[0].Rows[0];
-
-                print(row["pw"].ToString());
-
                 CUserData data = new CUserData(row);
-
-                print(data.email);
 
                 successCallback?.Invoke(data);
             }
@@ -268,6 +260,58 @@ namespace MyProject
             {
                 data.profileText = profile;
                 successCallback?.Invoke(data);
+            }
+        }
+
+        /// <summary>
+        /// 현재 유저 데이터를 삭제한다.
+        /// </summary>
+        /// <param name="uid">유저 아이디</param>
+        /// <param name="successCallback">성공시 실행할 메서드</param>
+        public void DeleteUserInfo(int uid, Action successCallback)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = $"DELETE FROM users WHERE uid = {uid}";
+
+            int queryCount = cmd.ExecuteNonQuery();
+
+            if (queryCount > 0)
+            {
+                successCallback?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 데이터베이스에서 유저의 정보를 찾는다.
+        /// </summary>
+        /// <param name="email">찾을 유저의 이메일</param>
+        /// <param name="successCallback">성공시 실행할 메서드</param>
+        /// <param name="failureCallback">실패시 실행할 메서드</param>
+        public void SearchOtherUserInfo(string email, Action<CUserData> successCallback, Action failureCallback)
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = $"SELECT * FROM {tableName} WHERE email = '{email}'";
+
+            MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
+            DataSet set = new DataSet();
+
+            dataAdapter.Fill(set);
+
+            bool isSelectSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
+
+            if (isSelectSuccess)
+            {
+                DataRow row = set.Tables[0].Rows[0];
+                CUserData data = new CUserData(row);
+
+                successCallback?.Invoke(data);
+            }
+
+            else
+            {
+                failureCallback?.Invoke();
             }
         }
     }

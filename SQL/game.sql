@@ -2,7 +2,7 @@
 -- 호스트:                          127.0.0.1
 -- 서버 버전:                        11.4.2-MariaDB - mariadb.org binary distribution
 -- 서버 OS:                        Win64
--- HeidiSQL 버전:                  12.8.0.6908
+-- HeidiSQL 버전:                  12.6.0.6765
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,34 +14,15 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- game 데이터베이스 구조 내보내기
-CREATE DATABASE IF NOT EXISTS `game` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `game`;
-
--- 테이블 game.users 구조 내보내기
-CREATE TABLE IF NOT EXISTS `users` (
-  `uid` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `pw` varchar(100) NOT NULL,
-  `name` varchar(50) DEFAULT NULL,
-  `LEVEL` int(11) DEFAULT NULL,
-  `class` int(11) unsigned zerofill NOT NULL,
-  `profile_text` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`uid`),
-  UNIQUE KEY `UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- 테이블 데이터 game.users:~8 rows (대략적) 내보내기
+-- 테이블 데이터 game.users:~6 rows (대략적) 내보내기
+DELETE FROM `users`;
 INSERT INTO `users` (`uid`, `email`, `pw`, `name`, `LEVEL`, `class`, `profile_text`) VALUES
-	(1, 'abc@abc.abc', '1234', '헿', 5, 00000000000, '안녕하세요.'),
-	(4, 'ssb9292@naver.com', '123456789', '신승범', 31, 00000000000, '반가워요'),
-	(5, 'ssb9292@gmail.com', '2345', 'ㅁ', 10, 00000000000, '나는 10레벨 입니다.'),
-	(6, 'aaa@aaa.aaa', 'aaaa', 'ㄴ', 5, 00000000000, '내 이메일은 a로만 이루어져 있지'),
-	(7, 'bbb@naver.com', 'bbbbb', 'ㅇ', 5, 00000000000, '내 패스워드는 b로만 이루어져 있지'),
-	(8, 'happy@naver.com', 'happy', 'ㄹ', 6, 00000000000, '행복'),
-	(9, 'bcd@bcd.bcd', '1234', NULL, 1, 00000000000, NULL),
-	(11, '123@123.com', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', '신승범', 35, 00000000002, '저는 유석호입니다.');
+	(12, 'aaa@aaa.aaa', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'aaa', 1, 00000000001, '저는 aaa입니다.'),
+	(14, 'dkfmadlthdud@gmail.com', '30E01E459489FF36DD9165EF4E9A10027FC50CC5B2A6D70F6A0126629D0F9EE4', '또앵', 30, 00000000001, '저는 용임미댜'),
+	(15, 'ssb9292@naver.com', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', '신승범', 10, 00000000003, '저는 신승범입니다.'),
+	(16, 'bbb@bbb.bbb', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'bbb', 4, 00000000002, '저는 bbb입니다.'),
+	(17, 'ccc@ccc.ccc', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'ccc', 2, 00000000003, '저는 ccc입니다.'),
+	(18, 'ddd@ddd.ddd', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'ddd', 8, 00000000003, '안녕하세요 ddd입니다.');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

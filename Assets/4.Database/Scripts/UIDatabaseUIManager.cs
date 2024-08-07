@@ -39,6 +39,10 @@ namespace MyProject
 
         [Header("회원 탈퇴 버튼")]
         public Button deleteInfoButton;
+
+        [Header("유저 정보 조회 관련 UI")]
+        public InputField otherUserEmailInput;
+        public Text otherUserInfoText;
         #endregion
 
         #region private 변수
@@ -127,14 +131,47 @@ namespace MyProject
         }
 
         /// <summary>
+        /// 유저 데이터 삭제 Button을 Click 했을 때 실행될 메서드
+        /// </summary>
+        public void OnClickDeleteUserInfoButton()
+        {
+            CDatabaseManager.Instance.DeleteUserInfo(userData.UID, OnDeleteUserInfoSuccess);
+        }
+
+        /// <summary>
+        /// 다른 유저 정보 조회를 위해 InputField가 Submit 됐을 때 실행될 메서드
+        /// </summary>
+        public void OnSubmitOtherUserEmailInpuField()
+        {
+            CDatabaseManager.Instance.SearchOtherUserInfo(otherUserEmailInput.text, OnSearchOtherUserInfoSuccess, OnSearchOtherUserInfoFailure);
+        }
+
+        /// <summary>
+        /// 로그인 패널로 돌아가기 버튼 Click
+        /// </summary>
+        public void OnClickBackToLoginPanelButton()
+        {
+            changeNameInput.text = "";
+            changeProfileInput.text = "";
+
+            otherUserEmailInput.text = "";
+            otherUserInfoText.text = "";
+
+            infoPanel.SetActive(false);
+            loginPanel.SetActive(true);
+        }
+
+        /// <summary>
         /// 로그인 성공시 호출할 메서드
         /// </summary>
         /// <param name="data">유저 데이터</param>
         void OnLoginSuccess(CUserData data)
         {
-            print("로그인 성공!");
-
             userData = data;
+
+            signinResultText.text = "";
+            emailInput.text = "";
+            pwInput.text = "";
 
             loginPanel.SetActive(false);
             infoPanel.SetActive(true);
@@ -155,7 +192,7 @@ namespace MyProject
         /// </summary>
         void OnLoginFailure()
         {
-            print("로그인 실패 ㅠㅠ");
+            signinResultText.text = "이메일 주소나 비밀번호가 일치하지 않습니다.";
         }
 
         /// <summary>
@@ -230,6 +267,40 @@ namespace MyProject
 
             infoText.text = sb.ToString();
             levelText.text = $"레벨 : {data.level}";
+        }
+
+        /// <summary>
+        /// 유저 정보 삭제에 성공했을 때 호출할 메서드
+        /// </summary>
+        void OnDeleteUserInfoSuccess()
+        {
+            infoPanel.SetActive(false);
+            loginPanel.SetActive(true);
+        }
+
+        /// <summary>
+        /// 다른 유저 정보 조회에 성공했을 때 호출할 메서드
+        /// </summary>
+        /// <param name="data">유저 데이터</param>
+        void OnSearchOtherUserInfoSuccess(CUserData data)
+        {
+            StringBuilder st = new StringBuilder();
+
+            st.AppendLine($"이메일 : {data.email}");
+            st.AppendLine($"이름 : {data.name}");
+            st.AppendLine($"클래스 : {data.charClass}");
+            st.AppendLine($"레벨 : {data.level}");
+            st.AppendLine($"소개글 : {data.profileText}");
+
+            otherUserInfoText.text = st.ToString();
+        }
+
+        /// <summary>
+        /// 다른 유저 정보 조회에 실패했을 때 호출할 메서드
+        /// </summary>
+        void OnSearchOtherUserInfoFailure()
+        {
+            otherUserInfoText.text = "유저 정보 조회에 실패했습니다.";
         }
     }
 }
