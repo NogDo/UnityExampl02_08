@@ -19,6 +19,7 @@ namespace MyProject
         MySqlConnection conn;   // mysql DB와 연결상태를 유지하는 객체.
 
         string serverIP = "127.0.0.1";
+        string awsServerIP = "3.35.220.113";
         string dbName = "game";
         string tableName = "users";
         string rootPasswd = "1234"; // 테스트시에 활용할 수 있지만 보안에 취약하므로 주의
@@ -64,7 +65,7 @@ namespace MyProject
         /// </summary>
         public void DBConnect()
         {
-            string config = $"server={serverIP};port=3306;database={dbName};uid=root;pwd={rootPasswd};charset=utf8";
+            string config = $"server={awsServerIP};port=3306;database={dbName};uid=root;pwd={rootPasswd};charset=utf8";
 
             conn = new MySqlConnection(config);
             conn.Open();
